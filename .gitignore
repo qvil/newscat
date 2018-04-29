@@ -18,3 +18,7 @@ yarn-error.log*
 
 # vscdoe
 .vscode
+.DS_Store
+
+# config
+config.json
