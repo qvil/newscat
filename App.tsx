@@ -1,33 +1,39 @@
 import * as React from "react";
 import { StyleSheet } from "react-native";
-import { Container, Header } from "native-base";
+import { Container } from "native-base";
 import Loading from "./src/components/Loading";
 import ArticleView from "./src/views/ArticleView";
 // import Loading from "components/Loading"; // 실행은 되는데 error 떠서 밑에 typescript가 동작을 안 함.
+import { getNews } from "./src/lib/news";
 
 export default class App extends React.Component<{}> {
   state = {
-    loading: false
+    loading: true,
+    articles: []
   };
 
+  async componentDidMount() {
+    await getNews()
+      .then((response: any) => {
+        this.setState({ articles: response.articles, loading: false });
+      })
+      .catch((error: any) => {
+        this.setState({ loading: false });
+        console.error(error);
+      });
+  }
+
   render() {
-    const { loading } = this.state;
+    const { loading, articles } = this.state;
 
     return (
       <Container>
-        {/* <Container style={styles.container}> */}
-        <Header />
-        {loading ? <Loading message="Loading..." /> : <ArticleView />}
+        {loading ? (
+          <Loading message="Loading..." />
+        ) : (
+          <ArticleView articles={articles} />
+        )}
       </Container>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center"
-  }
-});

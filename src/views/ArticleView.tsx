@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, TouchableOpacity, Linking } from "react-native";
 import {
   Container,
   Header,
@@ -11,46 +11,25 @@ import {
   Body
 } from "native-base";
 import Article from "../components/Article";
-import { getNews } from "../lib/news";
 
-export interface ArticleViewProps {}
+export interface ArticleViewProps {
+  articles: any;
+}
 
 export default class ArticleView extends React.Component<
   ArticleViewProps,
   any
 > {
-  styles = StyleSheet.create({
-    container: {
-      // backgroundColor: "pink"
-    }
-  });
-
-  state = {
-    articles: []
-  };
-
-  async componentDidMount() {
-    await getNews()
-      .then(response => this.setState({ articles: response.articles }))
-      .catch(error => console.error(error));
-  }
-
   render() {
-    const { styles } = this;
-    const { articles } = this.state;
+    const { articles } = this.props;
 
     return (
-      // <Container>
-      <Container style={styles.container}>
+      <Container>
+        <Header />
         <Content>
           <List>
             {articles.map((article: any, index: number) => (
-              <Article
-                key={index}
-                thumbnailUri={article.urlToImage}
-                title={article.title}
-                description={article.description}
-              />
+              <Article key={index} {...article} />
             ))}
           </List>
         </Content>
