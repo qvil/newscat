@@ -15,10 +15,8 @@ export default class App extends React.Component<{}> {
 
     return (
       <Container>
-        <Header />
-
         {/* <Container style={styles.container}> */}
-        {/* <Loading message={() => 1} /> */}
+        <Header />
         {loading ? <Loading message="Loading..." /> : <ArticleView />}
       </Container>
     );
